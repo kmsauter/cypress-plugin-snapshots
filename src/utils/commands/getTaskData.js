@@ -1,6 +1,6 @@
 const { getTestTitle, getSpec } = require('../test/Test');
 const { getSnapshotTitle } = require('../Snapshot');
-const { getSubject, isHtml } = require('./index');
+const { getSubject, isHtml } = require('../text/html');
 const { TYPE_IMAGE, TYPE_JSON, TYPE_HTML, COMMAND_MATCH_IMAGE_SNAPSHOT } = require('../../constants');
 
 function isImage(commandName) {

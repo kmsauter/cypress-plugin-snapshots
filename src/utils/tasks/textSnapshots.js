@@ -3,13 +3,9 @@ const fs = require('fs-extra');
 const unidiff = require('unidiff');
 const prettier = require('prettier');
 const { TYPE_JSON } = require('../../constants');
-const {
-  getConfig,
-  shouldNormalize,
-  getPrettierConfig
-} = require('../../config');
+const { getConfig, shouldNormalize, getPrettierConfig } = require('../../config');
 const removeExcludedFields = require('../text/removeExcludedFields');
-const { formatJson, normalizeObject } = require('../json');
+const { formatJson, normalizeObject } = require('../text/json');
 
 function subjectToSnapshot(subject, dataType = TYPE_JSON, config = {}) {
   let result = subject;

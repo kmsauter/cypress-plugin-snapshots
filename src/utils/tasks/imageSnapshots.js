@@ -4,6 +4,8 @@ const fs = require('fs-extra');
 const pixelmatch = require('pixelmatch');
 const { merge } = require('lodash');
 const rimraf = require('rimraf').sync;
+const Jimp = require('jimp');
+const imageSize = require('image-size');
 const { getImageSnapshotFilename } = require('../Snapshot');
 const getImageData = require('../image/getImageData');
 const { IMAGE_TYPE_ACTUAL } = require('../../constants');
@@ -53,6 +55,26 @@ function getImageObject(filename, addHash = true) {
   }
 
   return false;
+}
+
+function resizeImage(filename, targetFile, devicePixelRatio) {
+  if (devicePixelRatio !== 1 && fs.existsSync(filename)) {
+    const dimensions = imageSize(filename);
+    const height = Math.floor(dimensions.height / devicePixelRatio);
+    const width = Math.floor(dimensions.width / devicePixelRatio);
+
+    return Jimp.read(filename)
+      .then(image => image
+        .resize(width, height)
+        .writeAsync(targetFile))
+      .then(() => fs.remove(filename))
+      .then(() => true)
+      .catch(err => {
+        throw new Error(err);
+      });
+  }
+
+  return Promise.resolve(false);
 }
 
 function createCompareCanvas(width, height, source) {
@@ -161,5 +183,6 @@ module.exports = {
   createDiffObject,
   getImageObject,
   saveImageSnapshot,
-  moveActualImageToSnapshotsDirectory
+  moveActualImageToSnapshotsDirectory,
+  resizeImage
 };

@@ -6,6 +6,7 @@ function formatNormalizedJson(subject) {
   return formatJson(normalizeObject(subject));
 }
 
+// Alphabetically sort keys in JSON
 function normalizeObject(subject) {
   if (Array.isArray(subject)) {
     return subject.map(normalizeObject);
