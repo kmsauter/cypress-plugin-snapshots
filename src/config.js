@@ -1,5 +1,5 @@
 const { merge, cloneDeep, clone } = require('lodash');
-const { TYPE_JSON } = require('./dataTypes');
+const { TYPE_JSON } = require('./constants');
 
 const DEFAULT_SCREENSHOT_CONFIG = Object.freeze({
   blackout: [],

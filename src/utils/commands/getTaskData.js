@@ -6,8 +6,7 @@ const {
   getSubject,
   isHtml
 } = require('./index');
-const { COMMAND_MATCH_IMAGE_SNAPSHOT } = require('../../commands/commandNames');
-const { TYPE_IMAGE, TYPE_JSON, TYPE_HTML } = require('../../dataTypes');
+const { TYPE_IMAGE, TYPE_JSON, TYPE_HTML, COMMAND_MATCH_IMAGE_SNAPSHOT } = require('../../constants');
 
 function isImage(commandName) {
   return commandName === COMMAND_MATCH_IMAGE_SNAPSHOT;

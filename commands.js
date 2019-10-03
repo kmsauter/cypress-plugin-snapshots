@@ -5,8 +5,7 @@ const { initUi, closeSnapshotModals } = require('./src/ui/ui');
 const commands = require('./src/commands/index');
 const cleanUpSnapshots = require('./src/utils/commands/cleanupSnapshots');
 const getConfig = require('./src/utils/commands/getConfig');
-const { NO_LOG } = require('./src/constants');
-const { CLEANUP_FOLDERS } = require('./src/tasks/taskNames');
+const { NO_LOG, TASK_CLEANUP_FOLDERS } = require('./src/constants');
 
 function addCommand(commandName, method) {
   Cypress.Commands.add(commandName, {
@@ -49,7 +48,7 @@ function initCommands() {
   // Add test icons and clean up unused snapshots
   after(() => {
     cleanUpSnapshots();
-    cy.task(CLEANUP_FOLDERS, Cypress.config('screenshotsFolder'), NO_LOG);
+    cy.task(TASK_CLEANUP_FOLDERS, Cypress.config('screenshotsFolder'), NO_LOG);
   });
 
   // Add commands

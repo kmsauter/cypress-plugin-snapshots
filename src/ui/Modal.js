@@ -1,8 +1,7 @@
 const { Diff2Html } = require('diff2html');
 const { Base64 } = require('js-base64');
 const diff2HtmlTemplate = require('./diff2html-templates');
-const { URL_PREFIX } = require('../constants');
-const { UPDATE_SNAPSHOT } = require('../tasks/taskNames');
+const { URL_PREFIX, TASK_UPDATE_SNAPSHOT } = require('../constants');
 const { CONFIG_KEY } = require('../config');
 
 const { $ } = Cypress;
@@ -65,7 +64,7 @@ Modal.prototype.show = function (data, diffHtml, target) {
     $('<button class="snapshot-btn-approve"><i class="fa fa-check"></i> Update snapshot</button>')
       .on('click', function () {
         Cypress.backend('task', {
-          task: UPDATE_SNAPSHOT,
+          task: TASK_UPDATE_SNAPSHOT,
           arg: data,
           timeout: 5000
         }).then(function (updatedData) {

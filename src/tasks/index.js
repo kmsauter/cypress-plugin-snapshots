@@ -1,20 +1,15 @@
 const {
-  GET_FILE,
-  MATCH_IMAGE,
-  MATCH_TEXT,
-  CLEANUP_FOLDERS,
-  UPDATE_SNAPSHOT
-} = require('./taskNames');
-const getFile = require('./getFile');
-const matchImageSnapshot = require('./matchImageSnapshot');
-const matchTextSnapshot = require('./matchTextSnapshot');
-const cleanupFolders = require('./cleanupFolders');
-const updateSnapshot = require('./updateSnapshot');
+  TASK_GET_FILE,
+  TASK_MATCH_IMAGE,
+  TASK_MATCH_TEXT,
+  TASK_CLEANUP_FOLDERS,
+  TASK_UPDATE_SNAPSHOT
+} = require('../constants');
 
 module.exports = {
-  [GET_FILE]: getFile,
-  [MATCH_IMAGE]: matchImageSnapshot,
-  [MATCH_TEXT]: matchTextSnapshot,
-  [CLEANUP_FOLDERS]: cleanupFolders,
-  [UPDATE_SNAPSHOT]: updateSnapshot
+  [TASK_GET_FILE]: require('./getFile'),
+  [TASK_MATCH_IMAGE]: require('./matchImageSnapshot'),
+  [TASK_MATCH_TEXT]: require('./matchTextSnapshot'),
+  [TASK_CLEANUP_FOLDERS]: require('./cleanupFolders'),
+  [TASK_UPDATE_SNAPSHOT]: require('./updateSnapshot')
 };

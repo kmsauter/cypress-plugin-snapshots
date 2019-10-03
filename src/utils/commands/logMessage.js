@@ -1,7 +1,6 @@
 const { Base64 } = require('js-base64');
 const { cloneDeep } = require('lodash');
-const { URL_PREFIX } = require('../../constants');
-const { TYPE_IMAGE } = require('../../dataTypes');
+const { URL_PREFIX, TYPE_IMAGE } = require('../../constants');
 
 function getErrorMessage(result) {
   if (result.dataType === TYPE_IMAGE) {

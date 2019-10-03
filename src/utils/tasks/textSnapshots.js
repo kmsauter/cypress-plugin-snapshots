@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const unidiff = require('unidiff');
 const prettier = require('prettier');
-const { TYPE_JSON } = require('../../dataTypes');
+const { TYPE_JSON } = require('../../constants');
 const {
   getConfig,
   shouldNormalize,
