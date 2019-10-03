@@ -9,7 +9,7 @@ const getImageData = require('../image/getImageData');
 const { IMAGE_TYPE_ACTUAL } = require('../../constants');
 const { DEFAULT_IMAGE_CONFIG } = require('../../config');
 
-function moveActualImageToSnapshotsDirectory({image, snapshotTitle, testFile} = {}) {
+function moveActualImageToSnapshotsDirectory({ image, snapshotTitle, testFile } = {}) {
   if (image && image.path) {
     const filename = getSnapshotFilename(testFile, snapshotTitle, IMAGE_TYPE_ACTUAL);
     rimraf(filename);
@@ -48,7 +48,7 @@ function getImageObject(filename, addHash = true) {
       image,
       hash,
       height: image.height,
-      width: image.width,
+      width: image.width
     };
   }
 
@@ -64,7 +64,7 @@ function createCompareCanvas(width, height, source) {
       red: 0,
       green: 0,
       blue: 0,
-      alpha: 0,
+      alpha: 0
     }
   });
   PNG.bitblt(source, canvas, 0, 0, source.width, source.height, 0, 0);
@@ -106,7 +106,7 @@ function compareImages(expected, actual, diffFilename, config) {
 
     const imageConfig = merge({}, DEFAULT_IMAGE_CONFIG, config);
     const pixelmatchConfig = {
-      threshold: 0.01,
+      threshold: 0.01
     };
 
     const imageWidth = actual.image.width;
@@ -114,7 +114,7 @@ function compareImages(expected, actual, diffFilename, config) {
 
     const diffImage = config.createDiffImage ? new PNG({
       height: imageHeight,
-      width: imageWidth,
+      width: imageWidth
     }) : null;
 
     const totalPixels = imageWidth * imageHeight;
@@ -133,8 +133,8 @@ function compareImages(expected, actual, diffFilename, config) {
       const diffRatio = diffPixelCount / totalPixels;
       passed = diffRatio <= imageConfig.threshold;
     } else {
-      throw new Error(`Unknown imageConfig.thresholdType: ${imageConfig.thresholdType}. `+
-        `Valid options are "pixel" or "percent".`);
+      throw new Error(`Unknown imageConfig.thresholdType: ${imageConfig.thresholdType}. 
+        Valid options are "pixel" or "percent".`);
     }
 
     if (!passed && diffImage) {

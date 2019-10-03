@@ -1,6 +1,6 @@
 const getTestTitle = require('./getTestTitle');
 
-const SNAPSHOTS_TEXT = {}
+const SNAPSHOTS_TEXT = {};
 const SNAPSHOTS_IMAGE = {};
 
 const SNAPSHOT_TITLES_TEXT = [];
@@ -28,4 +28,4 @@ function getSnapshotTitle(test, customName, isImage = false) {
 module.exports = {
   getSnapshotTitle,
   snapshotTitleIsUsed
-}
+};

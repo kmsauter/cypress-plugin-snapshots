@@ -1,4 +1,4 @@
-/* globals Cypress, before, after, cy */
+/* globals Cypress */
 /* eslint-env browser */
 const { merge, cloneDeep } = require('lodash');
 const { initUi, closeSnapshotModals } = require('./src/ui/ui');
@@ -38,7 +38,7 @@ function initCommands() {
   }
 
   function clearFileCache() {
-    Cypress.__readFileCache__ = {};
+    Cypress.__readFileCache__ = {}; /* eslint-disable-line no-underscore-dangle */
   }
 
   // Close snapshot modal and reset image files cache before all test restart
@@ -49,7 +49,7 @@ function initCommands() {
   // Add test icons and clean up unused snapshots
   after(() => {
     cleanUpSnapshots();
-    cy.task(CLEANUP_FOLDERS, Cypress.config('screenshotsFolder'), NO_LOG).then(console.log); 
+    cy.task(CLEANUP_FOLDERS, Cypress.config('screenshotsFolder'), NO_LOG);
   });
 
   // Add commands
@@ -57,7 +57,7 @@ function initCommands() {
 }
 
 module.exports = {
-  initCommands,
+  initCommands
 };
 
 if (!process.env.JEST_WORKER_ID) {

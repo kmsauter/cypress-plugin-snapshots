@@ -15,7 +15,7 @@ function getFile(filename) {
     throw new Error(`File '${filename}' cannot be found. Location: '${fullPath}'`);
   }
 
-  return fs.readFileSync(fullPath, {encoding: 'utf8'});
+  return fs.readFileSync(fullPath, { encoding: 'utf8' });
 }
 
 module.exports = getFile;

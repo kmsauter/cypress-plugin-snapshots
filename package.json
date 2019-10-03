@@ -36,7 +36,8 @@
     "cy:run": "npm --prefix cypress run cy:run",
     "cy:verify": "npm --prefix cypress run cy:verify",
     "jest": "jest",
-    "lint": "eslint *.js",
+    "lint": "eslint **/*.js",
+    "lint:fix": "eslint **/*.js --fix",
     "start": "node cypress/test-server/index.js",
     "test": "jest & npm --prefix cypress run cy:run"
   },
@@ -95,10 +96,24 @@
       "jest/globals": true
     },
     "rules": {
-      "no-param-reassign": 0,
-      "no-use-before-define": 0,
+      "array-bracket-spacing": [2, "always", { "singleValue": false }],
+      "comma-dangle": [2, "never"],
+      "comma-spacing": [2, { "before": false, "after": true }],
+      "consistent-this": [2, "that"],
+      "eol-last": [2, "always"],
+      "func-names": 0,
+      "function-paren-newline": [2, "consistent"],
       "global-require": 0,
-      "no-underscore-dangle": 0,
+      "indent": [2, 2],
+      "linebreak-style": 0,
+      "no-console": 0,
+      "no-extra-parens": 2,
+      "no-multiple-empty-lines": [2, { "max": 2, "maxEOF": 1 }],
+      "no-multi-spaces": 2,
+      "no-param-reassign": 0,
+      "no-trailing-spaces": 2,
+      "no-underscore-dangle": 1,
+      "no-use-before-define": 0,  
       "object-curly-newline": [
         "error",
         {
@@ -117,11 +132,14 @@
             "minProperties": 3
           }
         }
-      ]
+      ],
+      "object-curly-spacing": [2, "always"],
+      "quotes": [2, "single", { "avoidEscape": true }],
+      "semi": [2, "always"]
     }
   },
   "eslintIgnore": [
-    "cypress/**/*"
+    "cypress/**/*", "__tests__/**"
   ],
   "jest": {
     "testPathIgnorePatterns": [

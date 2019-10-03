@@ -1,4 +1,4 @@
-/* globals Cypress, before, after, cy */
+/* globals Cypress */
 /* eslint-env browser */
 const { CONFIG_KEY } = require('../../config');
 

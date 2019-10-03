@@ -8,14 +8,14 @@ const DEFAULT_SCREENSHOT_CONFIG = Object.freeze({
   disableTimersAndAnimations: true,
   log: false,
   scale: false,
-  timeout: 30000,
+  timeout: 30000
 });
 
 const DEFAULT_IMAGE_CONFIG = Object.freeze({
   createDiffImage: true,
   resizeDevicePixelRatio: true,
   threshold: 0.1,
-  thresholdType: 'percent', // can be 'percent' or 'pixel'
+  thresholdType: 'percent' // can be 'percent' or 'pixel'
 });
 
 const DEFAULT_CONFIG = Object.freeze({
@@ -34,12 +34,12 @@ const DEFAULT_CONFIG = Object.freeze({
       parser: 'html',
       tabWidth: 2,
       endOfLine: 'lf'
-    },
+    }
   },
   screenshotConfig: clone(DEFAULT_SCREENSHOT_CONFIG),
   updateSnapshots: false,
   backgroundBlend: 'difference',
-  name: '',
+  name: ''
 });
 
 const CONFIG_KEY = 'cypress-plugin-snapshots';
@@ -60,28 +60,24 @@ function getConfig() {
 function getImageConfig(options = {}) {
   return Object.keys(DEFAULT_IMAGE_CONFIG)
     .filter((key) => options.imageConfig && options.imageConfig[key] !== undefined)
-    .reduce(
-      (imageConfig, key) => {
-        imageConfig[key] = options.imageConfig[key];
-        return imageConfig;
-      },
-      merge({}, DEFAULT_IMAGE_CONFIG, getConfig().imageConfig)
-    );
+    .reduce((imageConfig, key) => {
+      imageConfig[key] = options.imageConfig[key];
+      return imageConfig;
+    },
+    merge({}, DEFAULT_IMAGE_CONFIG, getConfig().imageConfig));
 }
 
 
 function getScreenshotConfig(options = {}) {
   const screenshotConfig = Object.keys(DEFAULT_SCREENSHOT_CONFIG)
     .filter((key) => options && options[key] !== undefined)
-    .reduce(
-      (imageConfig, key) => {
-        imageConfig[key] = options[key];
-        return imageConfig;
-      },
-      merge({}, DEFAULT_SCREENSHOT_CONFIG, getConfig().screenshotConfig)
-    );
+    .reduce((imageConfig, key) => {
+      imageConfig[key] = options[key];
+      return imageConfig;
+    },
+    merge({}, DEFAULT_SCREENSHOT_CONFIG, getConfig().screenshotConfig));
 
-  screenshotConfig.blackout = (screenshotConfig.blackout || []);
+  screenshotConfig.blackout = screenshotConfig.blackout || [];
   screenshotConfig.blackout.push('.snapshot-diff');
   return screenshotConfig;
 }
@@ -113,5 +109,5 @@ module.exports = {
   getScreenshotConfig,
   getCustomName,
   initConfig,
-  shouldNormalize,
+  shouldNormalize
 };

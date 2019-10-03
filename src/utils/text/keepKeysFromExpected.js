@@ -16,7 +16,7 @@ function keepKeysFromExpected(subject, expected, keepConfig) {
 
     // Add extra items not existing in expected from subject to result
     if (!cfg.ignoreExtraArrayItems && subject.length > expected.length) {
-      return [...result, ...subject.slice(result.length, subject.length)];
+      return [ ...result, ...subject.slice(result.length, subject.length) ];
     }
 
     return result;

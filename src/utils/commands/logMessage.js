@@ -5,7 +5,7 @@ const { TYPE_IMAGE } = require('../../dataTypes');
 
 function getErrorMessage(result) {
   if (result.dataType === TYPE_IMAGE) {
-    return `Snapshots do not match.`;
+    return 'Snapshots do not match.';
   }
 
   return `Snapshots do not match:\n${result.diff}`;
@@ -43,7 +43,7 @@ function logMessage(result) {
     name: result.commandName,
     displayName: 'snapshot',
     message,
-    consoleProps: () => result,
+    consoleProps: () => result
   });
 
   if (!result.passed) {

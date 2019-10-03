@@ -27,5 +27,5 @@ function normalizeObject(subject) {
 module.exports = {
   formatNormalizedJson,
   formatJson,
-  normalizeObject,
+  normalizeObject
 };

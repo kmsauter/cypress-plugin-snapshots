@@ -6,7 +6,7 @@ const { IMAGE_TYPE_ACTUAL } = require('../constants');
 function saveImageSnapshot(data) {
   const {
     testFile,
-    snapshotTitle,
+    snapshotTitle
   } = data;
   const filename = getSnapshotFilename(testFile, snapshotTitle);
   const actualFilename = getSnapshotFilename(testFile, snapshotTitle, IMAGE_TYPE_ACTUAL);

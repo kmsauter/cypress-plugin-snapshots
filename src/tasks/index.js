@@ -17,4 +17,4 @@ module.exports = {
   [MATCH_TEXT]: matchTextSnapshot,
   [CLEANUP_FOLDERS]: cleanupFolders,
   [UPDATE_SNAPSHOT]: updateSnapshot
-}
+};

@@ -4,7 +4,7 @@ const getSpec = require('./getSpec');
 const {
   getTestForTask,
   getSubject,
-  isHtml,
+  isHtml
 } = require('./index');
 const { COMMAND_MATCH_IMAGE_SNAPSHOT } = require('../../commands/commandNames');
 const { TYPE_IMAGE, TYPE_JSON, TYPE_HTML } = require('../../dataTypes');
@@ -13,7 +13,7 @@ function isImage(commandName) {
   return commandName === COMMAND_MATCH_IMAGE_SNAPSHOT;
 }
 
-function getDataType({commandName, subject}) {
+function getDataType({ commandName, subject }) {
   if (isImage(commandName)) {
     return TYPE_IMAGE;
   }
@@ -22,11 +22,11 @@ function getDataType({commandName, subject}) {
 }
 
 async function getTaskData({
-    commandName,
-    options,
-    customName,
-    subject: testSubject
-  } = {}) {
+  commandName,
+  options,
+  customName,
+  subject: testSubject
+} = {}) {
   const subjectIsImage = isImage(commandName);
   const test = getTestForTask();
   const testTitle = getTestTitle(test);
@@ -34,7 +34,7 @@ async function getTaskData({
   const testFile = spec.absolute;
   const snapshotTitle = getSnapshotTitle(test, customName, subjectIsImage);
   const subject = subjectIsImage ? testSubject : getSubject(testSubject);
-  const dataType = getDataType({commandName, subject: testSubject});
+  const dataType = getDataType({ commandName, subject: testSubject });
 
   return {
     commandName,
@@ -43,7 +43,7 @@ async function getTaskData({
     snapshotTitle,
     subject,
     testFile,
-    testTitle,
+    testTitle
   };
 }
 

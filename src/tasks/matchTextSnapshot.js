@@ -8,7 +8,7 @@ const {
   formatDiff,
   getSnapshot,
   subjectToSnapshot,
-  updateSnapshot,
+  updateSnapshot
 } = require('../utils/tasks/textSnapshots');
 const getSnapshotFilename = require('../utils/text/getSnapshotFilename');
 const keepKeysFromExpected = require('../utils/text/keepKeysFromExpected');
@@ -22,7 +22,7 @@ function matchTextSnapshot({
   options,
   snapshotTitle,
   subject,
-  testFile,
+  testFile
 } = {}) {
   const config = merge({}, cloneDeep(getConfig()), options);
   const snapshotFile = getSnapshotFilename(testFile);
@@ -32,8 +32,8 @@ function matchTextSnapshot({
 
   const exists = expected !== false;
 
-  const autoPassed = (config.autopassNewSnapshots && expected === false);
-  const passed = (expected && formatDiff(expected) === formatDiff(actual));
+  const autoPassed = config.autopassNewSnapshots && expected === false;
+  const passed = expected && formatDiff(expected) === formatDiff(actual);
   const diff = createDiff(expected, actual, snapshotTitle);
 
   let updated = false;
@@ -58,7 +58,7 @@ function matchTextSnapshot({
     snapshotFile,
     snapshotTitle,
     subject,
-    updated,
+    updated
   };
 
   return result;
