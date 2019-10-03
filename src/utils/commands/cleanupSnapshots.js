@@ -1,8 +1,7 @@
 /* globals cy */
 /* eslint-env browser */
 const { formatNormalizedJson } = require('../../utils/json');
-const getTextSnapshotFilename = require('../text/getSnapshotFilename');
-const { snapshotTitleIsUsed } = require('../../utils/snapshotTitles');
+const { getTextSnapshotFilename, snapshotTitleIsUsed } = require('../Snapshot');
 const getConfig = require('./getConfig');
 const { getSpec } = require('../../utils/test/Test');
 const { NO_LOG } = require('../../constants');

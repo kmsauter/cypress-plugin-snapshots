@@ -2,7 +2,7 @@ const { merge, cloneDeep } = require('lodash');
 const rimraf = require('rimraf').sync;
 const path = require('path');
 const { getConfig } = require('../config');
-const getSnapshotFilename = require('../utils/image/getSnapshotFilename');
+const { getImageSnapshotFilename } = require('../utils/Snapshot');
 const getImageData = require('../utils/image/getImageData');
 const saveImageSnapshot = require('../save/saveImageSnapshot');
 const { getImageObject, compareImages, moveActualImageToSnapshotsDirectory, createDiffObject } = require('../utils/tasks/imageSnapshots');
@@ -25,10 +25,10 @@ async function matchImageSnapshot(data = {}) {
     throw new Error('\'image.devicePixelRatio\' not defined');
   }
 
-  const actualFilename = getSnapshotFilename(testFile, snapshotTitle, IMAGE_TYPE_ACTUAL);
-  const diffFilename = getSnapshotFilename(testFile, snapshotTitle, IMAGE_TYPE_DIFF);
+  const actualFilename = getImageSnapshotFilename(testFile, snapshotTitle, IMAGE_TYPE_ACTUAL);
+  const diffFilename = getImageSnapshotFilename(testFile, snapshotTitle, IMAGE_TYPE_DIFF);
   const config = merge({}, cloneDeep(getConfig()), options);
-  const snapshotFile = getSnapshotFilename(testFile, snapshotTitle);
+  const snapshotFile = getImageSnapshotFilename(testFile, snapshotTitle);
   const resized = options && options.resizeDevicePixelRatio && image.devicePixelRatio !== 1;
   if (resized) {
     await resizeImage(image.path, actualFilename, image.devicePixelRatio);

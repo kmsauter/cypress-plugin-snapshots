@@ -10,7 +10,7 @@ const {
   subjectToSnapshot,
   updateSnapshot
 } = require('../utils/tasks/textSnapshots');
-const getSnapshotFilename = require('../utils/text/getSnapshotFilename');
+const { getTextSnapshotFilename }= require('../utils/Snapshot');
 const keepKeysFromExpected = require('../utils/text/keepKeysFromExpected');
 const {
   getConfig
@@ -25,7 +25,7 @@ function matchTextSnapshot({
   testFile
 } = {}) {
   const config = merge({}, cloneDeep(getConfig()), options);
-  const snapshotFile = getSnapshotFilename(testFile);
+  const snapshotFile = getTextSnapshotFilename(testFile);
   const expectedRaw = getSnapshot(snapshotFile, snapshotTitle, dataType);
   let expected = applyReplace(expectedRaw, config.replace);
   const actual = keepKeysFromExpected(subjectToSnapshot(subject, dataType, config), expected, config);
