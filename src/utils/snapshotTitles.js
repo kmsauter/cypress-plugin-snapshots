@@ -1,4 +1,4 @@
-const getTestTitle = require('./getTestTitle');
+const { getTestTitle } = require('./test/Test');
 
 const SNAPSHOTS_TEXT = {};
 const SNAPSHOTS_IMAGE = {};
@@ -10,8 +10,8 @@ function snapshotTitleIsUsed(snapshotTitle, isImage = false) {
   return (isImage ? SNAPSHOT_TITLES_IMAGE : SNAPSHOT_TITLES_TEXT).indexOf(snapshotTitle) !== -1;
 }
 
-function getSnapshotTitle(test, customName, isImage = false) {
-  const name = customName || getTestTitle(test);
+function getSnapshotTitle(customName, isImage = false) {
+  const name = customName || getTestTitle();
   const snapshots = isImage ? SNAPSHOTS_IMAGE : SNAPSHOTS_TEXT;
 
   if (snapshots[name] !== undefined) {

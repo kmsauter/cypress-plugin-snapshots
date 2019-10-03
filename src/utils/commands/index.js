@@ -1,20 +1,4 @@
-/* globals Cypress */
 /* eslint-env browser */
-function getTest() {
-  return Cypress.mocha.getRunner().test;
-}
-
-function getTestForTask(test) {
-  if (!test) {
-    test = getTest();
-  }
-  return {
-    id: test.id,
-    title: test.title,
-    parent: test.parent && test.parent.title ? getTestForTask(test.parent) : null
-  };
-}
-
 function isElement(obj) {
   return obj && (obj instanceof Element || (obj.nodeType && obj.nodeType === 1));
 }
@@ -73,7 +57,5 @@ function isHtml(subject) {
 
 module.exports = {
   getSubject,
-  getTest,
-  getTestForTask,
   isHtml
 };

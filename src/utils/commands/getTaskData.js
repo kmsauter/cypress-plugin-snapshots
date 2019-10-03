@@ -1,11 +1,6 @@
-const getTestTitle = require('../getTestTitle');
+const { getTestTitle, getSpec } = require('../test/Test');
 const { getSnapshotTitle } = require('../snapshotTitles');
-const getSpec = require('./getSpec');
-const {
-  getTestForTask,
-  getSubject,
-  isHtml
-} = require('./index');
+const { getSubject, isHtml } = require('./index');
 const { TYPE_IMAGE, TYPE_JSON, TYPE_HTML, COMMAND_MATCH_IMAGE_SNAPSHOT } = require('../../constants');
 
 function isImage(commandName) {
@@ -27,11 +22,10 @@ async function getTaskData({
   subject: testSubject
 } = {}) {
   const subjectIsImage = isImage(commandName);
-  const test = getTestForTask();
-  const testTitle = getTestTitle(test);
+  const testTitle = getTestTitle();
   const spec = await getSpec();
   const testFile = spec.absolute;
-  const snapshotTitle = getSnapshotTitle(test, customName, subjectIsImage);
+  const snapshotTitle = getSnapshotTitle(customName, subjectIsImage);
   const subject = subjectIsImage ? testSubject : getSubject(testSubject);
   const dataType = getDataType({ commandName, subject: testSubject });
 

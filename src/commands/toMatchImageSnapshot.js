@@ -1,7 +1,7 @@
 /* globals cy */
 /* eslint-env browser */
 const getTaskData = require('../utils/commands/getTaskData');
-const logMessage = require('../utils/commands/logMessage');
+const logMessage = require('../utils/test/logMessage');
 const { NO_LOG, TASK_MATCH_IMAGE, COMMAND_MATCH_IMAGE_SNAPSHOT: commandName } = require('../constants');
 const getImageData = require('../utils/image/getImageData');
 const { getImageConfig, getScreenshotConfig, getCustomName } = require('../config');

@@ -4,7 +4,7 @@ const { formatNormalizedJson } = require('../../utils/json');
 const getTextSnapshotFilename = require('../text/getSnapshotFilename');
 const { snapshotTitleIsUsed } = require('../../utils/snapshotTitles');
 const getConfig = require('./getConfig');
-const getSpec = require('./getSpec');
+const { getSpec } = require('../../utils/test/Test');
 const { NO_LOG } = require('../../constants');
 
 // Removes unused snapshots from snapshot file
