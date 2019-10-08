@@ -26,7 +26,7 @@ function matchTextSnapshot({
 } = {}) {
   const config = merge({}, cloneDeep(getConfig()), options);
   const snapshotFile = getTextSnapshotFilename(testFile);
-  const expectedRaw = getSnapshot(snapshotFile, snapshotTitle, dataType);
+  const expectedRaw = getSnapshot(snapshotFile, snapshotTitle, dataType, config);
   let expected = applyReplace(expectedRaw, config.replace);
   const actual = keepKeysFromExpected(subjectToSnapshot(subject, dataType, config), expected, config);
 

@@ -55,13 +55,13 @@ function createDiff(expected, actual, snapshotTitle) {
   return getDiff(expected, actual, snapshotTitle) || getDiff('', expected, snapshotTitle);
 }
 
-function getSnapshot(filename, snapshotTitle, dataType = TYPE_JSON) {
+function getSnapshot(filename, snapshotTitle, dataType = TYPE_JSON, config = {}) {
   fs.ensureDirSync(path.dirname(filename));
 
   if (fs.existsSync(filename)) {
     const snapshots = readFile(filename);
     if (snapshots[snapshotTitle]) {
-      return subjectToSnapshot(snapshots[snapshotTitle], dataType);
+      return subjectToSnapshot(snapshots[snapshotTitle], dataType, config);
     }
   } else {
     fs.writeFileSync(filename, '{}');

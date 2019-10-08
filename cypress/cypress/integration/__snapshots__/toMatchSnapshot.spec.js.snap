@@ -50,3 +50,32 @@ exports[`toMatchSnapshot > toMatchSnapshot - html escaping #0`] = `
   />
 </span>
 `;
+
+exports[`toMatchSnapshot > toMatchSnapshot - normalizeJson: false #0`] =
+{
+  "d": 1,
+  "a": 5,
+  "k": [
+    1,
+    2,
+    "k",
+    "a",
+    null,
+    null
+  ],
+  "q": {
+    "j": "k",
+    "b": 3,
+    "o": [
+      "o",
+      1,
+      {
+        "a": 1
+      },
+      null,
+      null
+    ],
+    "p": null
+  },
+  "t": null
+};
