@@ -1,10 +1,9 @@
 /* globals cy */
 /* eslint-env browser */
-const getTaskData = require('../utils/commands/getTaskData');
 const logMessage = require('../utils/test/logMessage');
-const { NO_LOG, TASK_MATCH_IMAGE, COMMAND_MATCH_IMAGE_SNAPSHOT: commandName } = require('../constants');
+const { NO_LOG, TASK_MATCH_IMAGE } = require('../constants');
 const getImageData = require('../utils/image/getImageData');
-const { getImageConfig, getScreenshotConfig, getCustomName } = require('../config');
+const { getImageConfig, getScreenshotConfig } = require('../config');
 
 function afterScreenshot(taskData) {
   return ($el, props) => {
@@ -17,18 +16,10 @@ function afterScreenshot(taskData) {
   };
 }
 
-function toMatchImageSnapshot(subject, commandOptions) {
-  const options = getImageConfig(commandOptions);
-  const customName = getCustomName(commandOptions);
+function toMatchImageSnapshot(taskData) {
+  const screenShotConfig = getScreenshotConfig(taskData.options);
+  taskData.options = getImageConfig(taskData.options);
 
-  const taskData = getTaskData({
-    commandName,
-    options,
-    customName,
-    subject
-  });
-
-  const screenShotConfig = getScreenshotConfig(commandOptions);
   const afterScreenshotFn = afterScreenshot(taskData);
   if (screenShotConfig.onAfterScreenshot) {
     const afterScreenshotCallback = screenShotConfig.onAfterScreenshot;
@@ -40,7 +31,7 @@ function toMatchImageSnapshot(subject, commandOptions) {
     screenShotConfig.onAfterScreenshot = afterScreenshotFn;
   }
 
-  return cy.wrap(subject, NO_LOG)
+  return cy.wrap(taskData.subject, NO_LOG)
     .screenshot(taskData.snapshotTitle, screenShotConfig)
     .then(() => cy.task(
       TASK_MATCH_IMAGE,

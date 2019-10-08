@@ -6,18 +6,24 @@ const commands = require('./src/commands/index');
 const cleanUpSnapshots = require('./src/utils/commands/cleanupSnapshots');
 const getConfig = require('./src/utils/commands/getConfig');
 const { NO_LOG, TASK_CLEANUP_FOLDERS } = require('./src/constants');
+const getTaskData = require('./src/utils/commands/getTaskData');
+const { getCustomName } = require('./src/config');
 
 function addCommand(commandName, method) {
   Cypress.Commands.add(commandName, {
     prevSubject: true
-  }, (commandSubject, taskOptions) => {
-    if (!commandSubject) {
-      return commandSubject;
-    }
+  }, (subject, taskOptions) => {
 
     const options = merge({}, cloneDeep(getConfig()), taskOptions);
-    return cy.wrap(commandSubject, NO_LOG)
-      .then((subject) => method(subject, options));
+
+    const taskData = getTaskData({
+      commandName,
+      options,
+      customName: getCustomName(options),
+      subject
+    });
+
+    return method(taskData);
   });
 }
 
