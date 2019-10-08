@@ -1,5 +1,10 @@
   describe('toMatchImageSnapshot', () => {
 
+    before(() => {
+      const baseDir = './cypress/integration/__image_snapshots__/';
+      cy.task('testing:deleteFiles', `${baseDir}toMatchImageSnapshot  no base snapshot  snapshot #0.png`);
+    });
+    
     it('toMatchImageSnapshot - element', () => {
       cy.visit('/static/stub.html')
         .then(() => {
