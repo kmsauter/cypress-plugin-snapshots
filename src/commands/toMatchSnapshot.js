@@ -5,15 +5,17 @@ const logMessage = require('../utils/test/logMessage');
 const { NO_LOG, TASK_MATCH_TEXT, COMMAND_MATCH_SNAPSHOT: commandName } = require('../constants');
 
 function toMatchSnapshot(subject, options) {
-  return getTaskData({
+  const taskData = getTaskData({
     commandName,
     options,
     subject
-  }).then(taskData => cy.task(
+  });
+
+  return cy.task(
     TASK_MATCH_TEXT,
     taskData,
     NO_LOG
-  ).then(logMessage));
+  ).then(logMessage);
 }
 
 module.exports = toMatchSnapshot;
