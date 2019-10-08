@@ -1,25 +1,25 @@
 /* globals Cypress */
 /* eslint-env browser */
-const { merge, cloneDeep } = require('lodash');
+const { merge } = require('lodash');
 const { initUi, closeSnapshotModals } = require('./src/ui/ui');
 const commands = require('./src/commands/index');
 const cleanUpSnapshots = require('./src/utils/commands/cleanupSnapshots');
-const getConfig = require('./src/utils/commands/getConfig');
 const { NO_LOG, TASK_CLEANUP_FOLDERS } = require('./src/constants');
 const getTaskData = require('./src/utils/commands/getTaskData');
-const { getCustomName } = require('./src/config');
+const { initConfig, CONFIG_KEY } = require('./src/config');
+
+let config;
 
 function addCommand(commandName, method) {
   Cypress.Commands.add(commandName, {
     prevSubject: true
   }, (subject, taskOptions) => {
 
-    const options = merge({}, cloneDeep(getConfig()), taskOptions);
+    const options = merge({}, config, taskOptions);
 
     const taskData = getTaskData({
       commandName,
       options,
-      customName: getCustomName(options),
       subject
     });
 
@@ -28,8 +28,8 @@ function addCommand(commandName, method) {
 }
 
 function initCommands() {
-  // Initialize config by getting it once
-  getConfig();
+  // Initialize config
+  config = initConfig(Cypress.env(CONFIG_KEY));
 
   if (!Cypress.browser.isHeadless) {
 
@@ -53,7 +53,7 @@ function initCommands() {
 
   // Add test icons and clean up unused snapshots
   after(() => {
-    cleanUpSnapshots();
+    cleanUpSnapshots(config);
     cy.task(TASK_CLEANUP_FOLDERS, Cypress.config('screenshotsFolder'), NO_LOG);
   });
 

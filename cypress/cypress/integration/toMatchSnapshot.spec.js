@@ -39,4 +39,10 @@ describe('toMatchSnapshot', () => {
       "normalizeJson": false
     });
   });
+
+  it('toMatchSnapshot - update', () => {
+    cy.wrap(Date.now()).toMatchSnapshot({
+      updateSnapshots: true
+    });
+  });
 });

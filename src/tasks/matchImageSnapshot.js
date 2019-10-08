@@ -1,7 +1,5 @@
-const { merge, cloneDeep } = require('lodash');
 const rimraf = require('rimraf').sync;
 const path = require('path');
-const { getConfig } = require('../config');
 const { getImageSnapshotFilename } = require('../utils/Snapshot');
 const getImageData = require('../utils/image/getImageData');
 const saveImageSnapshot = require('../utils/image/saveImageSnapshot');
@@ -28,9 +26,8 @@ async function matchImageSnapshot(data = {}) {
 
   const actualFilename = getImageSnapshotFilename(testFile, snapshotTitle, IMAGE_TYPE_ACTUAL);
   const diffFilename = getImageSnapshotFilename(testFile, snapshotTitle, IMAGE_TYPE_DIFF);
-  const config = merge({}, cloneDeep(getConfig()), options);
   const snapshotFile = getImageSnapshotFilename(testFile, snapshotTitle);
-  const resized = options && options.resizeDevicePixelRatio && image.devicePixelRatio !== 1;
+  const resized = options && options.imageConfig.resizeDevicePixelRatio && image.devicePixelRatio !== 1;
   if (resized) {
     await resizeImage(image.path, actualFilename, image.devicePixelRatio);
   }
@@ -42,15 +39,15 @@ async function matchImageSnapshot(data = {}) {
 
   const expected = getImageObject(snapshotFile);
   const exists = expected !== false;
-  const autoPassed = config.autopassNewSnapshots && expected === false;
+  const autoPassed = options.autopassNewSnapshots && expected === false;
   const actual = exists || resized ? getImageObject(image.path, true) : image;
-  const passed = expected && compareImages(expected, actual, diffFilename, options);
+  const passed = expected && compareImages(expected, actual, diffFilename, options.imageConfig);
 
   actual.resized = resized !== false;
 
   let updated = false;
 
-  if ((config.updateSnapshots && !passed) || expected === false) {
+  if ((options.updateSnapshots && !passed) || expected === false) {
     saveImageSnapshot({ testFile, snapshotTitle, actual });
     updated = true;
   }
@@ -59,7 +56,7 @@ async function matchImageSnapshot(data = {}) {
     rimraf(actual.path);
   }
 
-  const diff = passed || autoPassed || !options.createDiffImage ?
+  const diff = passed || autoPassed || !options.imageConfig.createDiffImage ?
     undefined : createDiffObject(diffFilename);
 
   const result = {
@@ -74,7 +71,8 @@ async function matchImageSnapshot(data = {}) {
     snapshotTitle,
     subject,
     updated,
-    isImage: true
+    isImage: true,
+    options
   };
 
   return result;

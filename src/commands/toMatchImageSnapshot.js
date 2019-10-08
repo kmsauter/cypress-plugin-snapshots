@@ -1,9 +1,9 @@
 /* globals cy */
 /* eslint-env browser */
+const { pick } = require('lodash');
 const logMessage = require('../utils/test/logMessage');
-const { NO_LOG, TASK_MATCH_IMAGE } = require('../constants');
+const { NO_LOG, TASK_MATCH_IMAGE, SCREENSHOT_ARGS } = require('../constants');
 const getImageData = require('../utils/image/getImageData');
-const { getImageConfig, getScreenshotConfig } = require('../config');
 
 function afterScreenshot(taskData) {
   return ($el, props) => {
@@ -17,8 +17,14 @@ function afterScreenshot(taskData) {
 }
 
 function toMatchImageSnapshot(taskData) {
-  const screenShotConfig = getScreenshotConfig(taskData.options);
-  taskData.options = getImageConfig(taskData.options);
+  const {
+    options,
+    subject,
+    snapshotTitle
+  } = taskData;
+
+  const taskOptions = pick(options, SCREENSHOT_ARGS);
+  const screenShotConfig = Object.assign(options.screenshotConfig || {}, taskOptions);
 
   const afterScreenshotFn = afterScreenshot(taskData);
   if (screenShotConfig.onAfterScreenshot) {
@@ -31,8 +37,8 @@ function toMatchImageSnapshot(taskData) {
     screenShotConfig.onAfterScreenshot = afterScreenshotFn;
   }
 
-  return cy.wrap(taskData.subject, NO_LOG)
-    .screenshot(taskData.snapshotTitle, screenShotConfig)
+  return cy.wrap(subject, NO_LOG)
+    .screenshot(snapshotTitle, screenShotConfig)
     .then(() => cy.task(
       TASK_MATCH_IMAGE,
       taskData,

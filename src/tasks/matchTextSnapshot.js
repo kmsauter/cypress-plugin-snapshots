@@ -1,7 +1,3 @@
-const {
-  merge,
-  cloneDeep
-} = require('lodash');
 const applyReplace = require('../utils/text/applyReplace');
 const {
   createDiff,
@@ -12,9 +8,6 @@ const {
 } = require('../utils/tasks/textSnapshots');
 const { getTextSnapshotFilename }= require('../utils/Snapshot');
 const keepKeysFromExpected = require('../utils/text/keepKeysFromExpected');
-const {
-  getConfig
-} = require('../config');
 
 function matchTextSnapshot({
   commandName,
@@ -24,21 +17,26 @@ function matchTextSnapshot({
   subject,
   testFile
 } = {}) {
-  const config = merge({}, cloneDeep(getConfig()), options);
+  const {
+    replace,
+    autopassNewSnapshots,
+    updateSnapshots
+  } = options;
+
   const snapshotFile = getTextSnapshotFilename(testFile);
-  const expectedRaw = getSnapshot(snapshotFile, snapshotTitle, dataType, config);
-  let expected = applyReplace(expectedRaw, config.replace);
-  const actual = keepKeysFromExpected(subjectToSnapshot(subject, dataType, config), expected, config);
+  const expectedRaw = getSnapshot(snapshotFile, snapshotTitle, dataType, options);
+  let expected = applyReplace(expectedRaw, replace);
+  const actual = keepKeysFromExpected(subjectToSnapshot(subject, dataType, options), expected, options);
 
   const exists = expected !== false;
 
-  const autoPassed = config.autopassNewSnapshots && expected === false;
-  const passed = expected && formatDiff(expected) === formatDiff(actual);
-  const diff = createDiff(expected, actual, snapshotTitle);
+  const autoPassed = autopassNewSnapshots && expected === false;
+  const passed = updateSnapshots || (expected && formatDiff(expected) === formatDiff(actual));
+  const diff = createDiff(expected, actual, snapshotTitle, options);
 
   let updated = false;
 
-  if ((config.updateSnapshots && !passed) || expected === false) {
+  if (updateSnapshots || expected === false) {
     updateSnapshot(snapshotFile, snapshotTitle, actual, dataType);
     updated = true;
   }
@@ -58,7 +56,8 @@ function matchTextSnapshot({
     snapshotFile,
     snapshotTitle,
     subject,
-    updated
+    updated,
+    options
   };
 
   return result;

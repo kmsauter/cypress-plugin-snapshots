@@ -2,14 +2,12 @@ const { createHash } = require('crypto');
 const { PNG } = require('pngjs');
 const fs = require('fs-extra');
 const pixelmatch = require('pixelmatch');
-const { merge } = require('lodash');
 const rimraf = require('rimraf').sync;
 const Jimp = require('jimp');
 const imageSize = require('image-size');
 const { getImageSnapshotFilename } = require('../Snapshot');
 const getImageData = require('../image/getImageData');
 const { IMAGE_TYPE_ACTUAL } = require('../../constants');
-const { DEFAULT_IMAGE_CONFIG } = require('../../config');
 
 function moveActualImageToSnapshotsDirectory({ image, snapshotTitle, testFile } = {}) {
   if (image && image.path) {
@@ -112,6 +110,12 @@ function compareImageSizes(expected, actual) {
 }
 
 function compareImages(expected, actual, diffFilename, config) {
+  const {
+    createDiffImage,
+    threshold,
+    thresholdType
+  } = config;
+
   let passed = false;
   rimraf(diffFilename);
 
@@ -126,7 +130,6 @@ function compareImages(expected, actual, diffFilename, config) {
       makeImagesEqualSize(expected, actual);
     }
 
-    const imageConfig = merge({}, DEFAULT_IMAGE_CONFIG, config);
     const pixelmatchConfig = {
       threshold: 0.01
     };
@@ -134,7 +137,7 @@ function compareImages(expected, actual, diffFilename, config) {
     const imageWidth = actual.image.width;
     const imageHeight = actual.image.height;
 
-    const diffImage = config.createDiffImage ? new PNG({
+    const diffImage = createDiffImage ? new PNG({
       height: imageHeight,
       width: imageWidth
     }) : null;
@@ -149,13 +152,13 @@ function compareImages(expected, actual, diffFilename, config) {
       pixelmatchConfig
     );
 
-    if (imageConfig.thresholdType === 'pixel') {
-      passed = diffPixelCount <= imageConfig.threshold;
-    } else if (imageConfig.thresholdType === 'percent') {
+    if (thresholdType === 'pixel') {
+      passed = diffPixelCount <= threshold;
+    } else if (thresholdType === 'percent') {
       const diffRatio = diffPixelCount / totalPixels;
-      passed = diffRatio <= imageConfig.threshold;
+      passed = diffRatio <= threshold;
     } else {
-      throw new Error(`Unknown imageConfig.thresholdType: ${imageConfig.thresholdType}. 
+      throw new Error(`Unknown imageConfig.thresholdType: ${thresholdType}. 
         Valid options are "pixel" or "percent".`);
     }
 

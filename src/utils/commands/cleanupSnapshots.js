@@ -2,13 +2,11 @@
 /* eslint-env browser */
 const { formatNormalizedJson } = require('../text/json');
 const { getTextSnapshotFilename, snapshotTitleIsUsed } = require('../Snapshot');
-const getConfig = require('./getConfig');
 const { getSpec } = require('../../utils/test/Test');
 const { NO_LOG } = require('../../constants');
 
 // Removes unused snapshots from snapshot file
-function cleanUpSnapshots() {
-  const config = getConfig();
+function cleanUpSnapshots(config) {
   if (!config.autoCleanUp) {
     return;
   }

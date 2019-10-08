@@ -1,5 +1,5 @@
 const path = require('path');
-const sanitizeFilename = require('sanitize-filename'); // todo
+const sanitizeFilename = require('sanitize-filename');
 const { DIR_SNAPSHOTS, DIR_IMAGE_SNAPSHOTS } = require('../constants');
 const { getTestTitle } = require('./test/Test');
 

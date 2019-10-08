@@ -20,13 +20,10 @@ describe('plugin', () => {
   it('initPlugin', () => {
     const globalConfig = {
       env: {
-        "cypress-plugin-snapshots": {
-          "serverEnabled": false,
-        }
+        "cypress-plugin-snapshots": {}
       }
     };
-    jest.spyOn(configModule, 'getConfig')
-      .mockImplementation(() => globalConfig.env['cypress-plugin-snapshots']);
+    
     const on = jest.fn();
 
     const { initPlugin } = require('../plugin');

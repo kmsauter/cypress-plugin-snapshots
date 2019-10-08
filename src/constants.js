@@ -22,9 +22,22 @@ module.exports = {
   DIR_IMAGE_SNAPSHOTS: '__image_snapshots__',
   DIR_SNAPSHOTS: '__snapshots__',
 
+  /* Cypress */
+  NO_LOG: { log: false },
+  SCREENSHOT_ARGS: [
+    'log',
+    'blackout',
+    'capture',
+    'clip',
+    'disableTimersAndAnimations',
+    'scale',
+    'timeout',
+    'onBeforeScreenshot',
+    'onAfterScreenshot'
+  ],
+
   /* Other */
   URL_PREFIX: '#cypress-plugin-snapshot-',
-  NO_LOG: { log: false },
   IMAGE_TYPE_DIFF: 'diff',
   IMAGE_TYPE_ACTUAL: 'actual'
 

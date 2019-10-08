@@ -18,14 +18,13 @@ function getDataType({ commandName, subject }) {
 function getTaskData({
   commandName,
   options,
-  customName,
   subject: testSubject
 } = {}) {
   const subjectIsImage = isImage(commandName);
   const testTitle = getTestTitle();
   const spec = getSpec();
   const testFile = spec.absolute;
-  const snapshotTitle = getSnapshotTitle(customName, subjectIsImage);
+  const snapshotTitle = getSnapshotTitle(options.name, subjectIsImage);
   const subject = subjectIsImage ? testSubject : getSubject(testSubject);
   const dataType = getDataType({ commandName, subject: testSubject });
 

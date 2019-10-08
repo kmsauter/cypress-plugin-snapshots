@@ -5,6 +5,7 @@ const { URL_PREFIX, TASK_UPDATE_SNAPSHOT } = require('../constants');
 const { CONFIG_KEY } = require('../config');
 
 const { $ } = Cypress;
+const diffFormat = Cypress.env(CONFIG_KEY.diffFormat) || 'side-by-side';
 
 function Modal(data, win, target) {
   this.max = false;
@@ -21,7 +22,7 @@ function Modal(data, win, target) {
   } else {
     diffHtml = Diff2Html.getPrettyHtml(data.diff, {
       inputFormat: 'diff',
-      outputFormat: data.passed || data.updated ? 'line-by-line' : 'side-by-side', // todo - add to config
+      outputFormat: data.passed || data.updated ? 'line-by-line' : diffFormat,
       synchronisedScroll: true
     });
     this.show(data, diffHtml, target);

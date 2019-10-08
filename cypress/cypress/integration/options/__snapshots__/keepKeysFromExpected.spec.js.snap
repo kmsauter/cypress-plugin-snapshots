@@ -1,0 +1,83 @@
+exports[`keepKeysFromExpected > ignoreExtraFields: true, ignoreExtraArrayItems: true #0`] =
+{
+  "field": "value",
+  "items": [
+    {
+      "items": [
+        {
+          "name": "subitem1"
+        }
+      ],
+      "name": "item1"
+    },
+    {
+      "name": "item2"
+    },
+    {
+      "name": "item3"
+    },
+    {
+      "name": null
+    },
+    {},
+    null,
+    null
+  ],
+  "null": null
+};
+
+exports[`keepKeysFromExpected > ignoreExtraFields: false, ignoreExtraArrayItems: true #0`] =
+{
+  "field": "value",
+  "items": [
+    {
+      "items": [
+        {
+          "name": "subitem1"
+        }
+      ],
+      "name": "item1"
+    },
+    {
+      "name": "item2"
+    },
+    {
+      "name": "item3"
+    },
+    {
+      "name": null
+    },
+    {},
+    null,
+    null
+  ],
+  "null": null
+};
+
+exports[`keepKeysFromExpected > ignoreExtraFields: true, ignoreExtraArrayItems: false #0`] =
+{
+  "field": "value",
+  "items": [
+    {
+      "items": [
+        {
+          "name": "subitem1"
+        }
+      ],
+      "name": "item1"
+    },
+    {
+      "name": "item2"
+    },
+    {
+      "name": "item3"
+    },
+    {
+      "name": null
+    },
+    {},
+    null,
+    null
+  ],
+  "null": null
+};

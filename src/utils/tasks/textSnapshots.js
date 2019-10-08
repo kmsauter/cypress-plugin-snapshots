@@ -3,14 +3,17 @@ const fs = require('fs-extra');
 const unidiff = require('unidiff');
 const prettier = require('prettier');
 const { TYPE_JSON } = require('../../constants');
-const { getConfig, shouldNormalize, getPrettierConfig } = require('../../config');
 const removeExcludedFields = require('../text/removeExcludedFields');
 const { formatJson, normalizeObject } = require('../text/json');
 
 function subjectToSnapshot(subject, dataType = TYPE_JSON, config = {}) {
   let result = subject;
 
-  if (typeof subject === 'object' && shouldNormalize(dataType, config)) {
+  if (dataType === TYPE_JSON) {
+    result = formatJson(result);
+  }
+
+  if (typeof subject === 'object' && dataType === TYPE_JSON && config.normalizeJson) {
     result = normalizeObject(subject);
   }
 
@@ -18,7 +21,7 @@ function subjectToSnapshot(subject, dataType = TYPE_JSON, config = {}) {
     result = removeExcludedFields(result, config.excludeFields);
   }
 
-  const prettierConfig = getPrettierConfig(dataType, config);
+  const prettierConfig = config.prettierConfig[dataType];
   if (prettierConfig) {
     try {
       if (typeof result === 'object') {
@@ -29,10 +32,7 @@ function subjectToSnapshot(subject, dataType = TYPE_JSON, config = {}) {
     } catch(err) {
       throw new Error(`Cannot format subject: ${result}`);
     }
-  } else if(dataType === TYPE_JSON && config.formatJson) {
-    result = formatJson(result);
   }
-
   return result;
 }
 
@@ -43,16 +43,16 @@ function formatDiff(subject) {
   return String(subject || '');
 }
 
-function getDiff(expected, actual, snapshotTitle) {
+function getDiff(expected, actual, snapshotTitle, options) {
   return unidiff.diffAsText(formatDiff(expected), formatDiff(actual), {
     aname: snapshotTitle,
     bname: snapshotTitle,
-    context: getConfig().diffLines
+    context: options.diffLines
   });
 }
 
-function createDiff(expected, actual, snapshotTitle) {
-  return getDiff(expected, actual, snapshotTitle) || getDiff('', expected, snapshotTitle);
+function createDiff(expected, actual, snapshotTitle, options) {
+  return getDiff(expected, actual, snapshotTitle, options) || getDiff('', expected, snapshotTitle, options);
 }
 
 function getSnapshot(filename, snapshotTitle, dataType = TYPE_JSON, config = {}) {
@@ -98,14 +98,9 @@ function readFile(filename) {
   return {};
 }
 
-function updateSnapshot(filename, snapshotTitle, subject, dataType = TYPE_JSON) {
+function updateSnapshot(filename, snapshotTitle, subject) {
   const store = readFile(filename);
-  if (dataType === TYPE_JSON) {
-    store[snapshotTitle] = JSON.parse(subject);
-  } else {
-    store[snapshotTitle] = subject;
-  }
-
+  store[snapshotTitle] = subject;
 
   // Reformat to `exports` format which is nicer for Git diffs
   const saveResult = Object.keys(store).reduce((result, key) => {

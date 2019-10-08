@@ -79,3 +79,7 @@ exports[`toMatchSnapshot > toMatchSnapshot - normalizeJson: false #0`] =
   },
   "t": null
 };
+
+exports[`toMatchSnapshot > toMatchSnapshot - update #0`] = `
+1570533048091
+`;

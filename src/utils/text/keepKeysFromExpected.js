@@ -1,5 +1,5 @@
 /**
- * Create new object based on `subject` that do only contains fields that exist in `expected`
+ * Create new object based on `subject` that only contains fields that exist in `expected`
  * @param {Object} subject
  * @param {Object} expected
  * @returns {Object}
@@ -21,11 +21,14 @@ function keepKeysFromExpected(subject, expected, keepConfig) {
 
     return result;
   }
+
   if (expected && subject && typeof expected === 'object' && typeof subject === 'object') {
     const origin = cfg.ignoreExtraFields ? expected : subject;
     return Object.keys(origin)
       .reduce((result, key) => {
-        result[key] = keepKeysFromExpected(subject[key], expected[key], cfg);
+        if (Object.prototype.hasOwnProperty.call(subject, key)) {
+          result[key] = keepKeysFromExpected(subject[key], expected[key], cfg);
+        }
         return result;
       }, {});
   }

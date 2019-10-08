@@ -9,11 +9,12 @@ function updateSnapshot(data) {
       snapshotFile,
       snapshotTitle,
       actual,
-      dataType
+      dataType,
+      options
     } = data;
 
     textSnapshots.updateSnapshot(snapshotFile, snapshotTitle, actual, dataType);
-    data.diff = textSnapshots.getDiff('', actual, snapshotTitle);
+    data.diff = textSnapshots.getDiff('', actual, snapshotTitle, options);
   }
 
   data.updated = true;
