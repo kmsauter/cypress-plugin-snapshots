@@ -6,7 +6,6 @@ const { STATE_AUTOPASSED, STATE_PASSED, STATE_FAILED, STATE_UPDATED, STATE_NEW }
 async function matchImageSnapshot(data = {}) {
   const {
     commandName,
-    dataType,
     image,
     options,
     snapshotTitle,
@@ -74,7 +73,6 @@ async function matchImageSnapshot(data = {}) {
 
   return {
     commandName,
-    dataType,
     isImage: true,
     options,
     snapshotTitle,
