@@ -16,7 +16,7 @@ function Modal(data, win, target) {
 
   if (data.isImage) {
     formatImageResult(data).then(function (diffHtml) { /* eslint-disable-line no-shadow */
-      diffHtml = diff2HtmlTemplate(data, `<div style="position: relative;">${diffHtml}</div>`);
+      diffHtml = diff2HtmlTemplate(data, diffHtml);
       that.show(data, diffHtml, target);
     });
   } else {
@@ -53,7 +53,7 @@ Modal.prototype.show = function (data, diffHtml, target) {
   if (isImage && !passed && !updated) {
     $('<select><option>difference</option><option>screen</option><option>overlay</option></select>')
       .change(function () {
-        modal.find('.snapshot-image--diff .snapshot-image__wrapper')
+        modal.find('.snapshot-image--diff div')
           .css('background-blend-mode', $(this).val());
       })
       .val(Cypress.env(CONFIG_KEY).backgroundBlend).prop('selected', true)
@@ -113,65 +113,58 @@ function getImageDataUri(filePath) {
 }
 
 function formatImageResult(data) {
+  const {
+    passed,
+    updated,
+    expected,
+    actual,
+    diff
+  } = data;
 
-  const title = data.snapshotTitle;
-
-  if (data.passed || data.updated) {
-    return getImageDataUri(data.expected.path)
-      .then((dataUri) =>
-        wrapImage('single', title, dataUri, `max-height: ${data.expected.height}px;max-width: ${data.expected.width}px;`)
-      ); /* eslint-disable-line function-paren-newline */
+  if (passed || updated) {
+    return getImageDataUri((expected || actual).path)
+      .then((dataUri) => wrapImage('single', dataUri));
   }
 
-  const imageHeight = data.diff ? data.diff.height : Math.max(data.actual.height, data.expected.height);
-  const imageWidth = data.diff ? data.diff.width : Math.max(data.actual.width, data.expected.width);
-  const imageRatio = Math.round(imageHeight / imageWidth * 10000) / 100;
-  const imageStyle = `padding-top: ${imageRatio}%;max-height: ${imageHeight}px;max-width: ${imageWidth}px;`;
-
   const promises = [
-    getImageDataUri(data.expected.path),
-    getImageDataUri(data.actual.path)
+    getImageDataUri(expected.path),
+    getImageDataUri(actual.path)
   ];
 
-  if (data.diff) {
-    promises.push(getImageDataUri(data.diff.path));
+  if (diff) {
+    promises.push(getImageDataUri(diff.path));
   }
 
   return Cypress.Promise.all(promises)
-    .then(([ expectedImage, actualImage, diffImage = '' ]) => {
+    .then(([ expectedImage, actualImage, diffImage ]) => {
       return (
-        wrapImage('Expected', title, expectedImage, imageStyle) +
-        wrapImage('Actual', title, actualImage, imageStyle) +
-        (diffImage ? createImageDiff(title, expectedImage, diffImage, imageStyle) : '')
+        wrapImage('expected', expectedImage) +
+        wrapImage('actual', actualImage) +
+        createImageDiff(expectedImage, diffImage)
       );
     });
 }
 
-function createImageDiff(title, expectedImage, diffImage, imageStyle) {
+function createImageContainer(imageTitle, content) {
+  return `<div class="snapshot-image snapshot-image--${imageTitle}">
+      <h2 class="snapshot-image__title">${imageTitle}</h2>
+      ${content}
+    </div>`;
+}
+
+function wrapImage(imageTitle, dataUri = '') {
+  return createImageContainer(imageTitle, `<img src="${dataUri}" alt="${imageTitle}">`);
+}
+
+function createImageDiff(expectedImage, diffImage) {
   // Overlay expected and diff image on top of each other
-  const diffStyle = `${imageStyle} background: 
-    url(${expectedImage}) top left no-repeat, 
-    url(${diffImage}) top left no-repeat; 
-    background-size: 100% auto, 100% auto;`;
+  if (diffImage) {
+    const style = `background: url(${expectedImage}) top left no-repeat, url(${diffImage}) top left no-repeat;
+			background-size: 100% auto, 100% auto;height:100%;`;
 
-  return wrapImage('diff', title, '', diffStyle);
-}
-
-function wrapImageStyle(imageStyle, image = '') {
-  if (imageStyle) {
-    return `<div class="snapshot-image__wrapper" style="${imageStyle}">${image || ''}</div>`;
+    return createImageContainer('diff', `<div style="${style}"></div>`);
   }
-  return image;
-}
-
-function wrapImage(imageTitle, title, dataUri = '', imageStyle = '') {
-  return `<div class="snapshot-image snapshot-image--${imageTitle.toLowerCase()}">
-				<h2 class="snapshot-image__title">${imageTitle} result</h2>
-				${wrapImageStyle(
-    imageStyle,
-    dataUri ? `<img src="${dataUri}" alt="${title}" class="snapshot-image__image">` : ''
-  )}
-			</div>`;
+  return '';
 }
 
 module.exports = Modal;

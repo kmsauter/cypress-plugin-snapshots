@@ -35,7 +35,7 @@ function initUi() {
   });
 
   $head.append(`<style>
-  .snapshot-image--diff .snapshot-image__wrapper {
+  .snapshot-image--diff div {
     background-blend-mode: ${config.backgroundBlend ? config.backgroundBlend : 'screen, difference'}
   }
   </style>`);

@@ -52,8 +52,6 @@
     "js-base64": "^2.5.1",
     "lodash": "^4.17.13",
     "mkdirp": "^0.5.1",
-    "pixelmatch": "^4.0.2",
-    "pngjs": "^3.3.3",
     "prettier": "^1.16.4",
     "rimraf": "^2.6.3",
     "sanitize-filename": "^1.6.1",
@@ -113,7 +111,7 @@
       "no-param-reassign": 0,
       "no-trailing-spaces": 2,
       "no-underscore-dangle": 1,
-      "no-use-before-define": 0,  
+      "no-use-before-define": 0,
       "object-curly-newline": [
         "error",
         {
@@ -134,12 +132,14 @@
         }
       ],
       "object-curly-spacing": [2, "always"],
+      "one-var": 0,
       "quotes": [2, "single", { "avoidEscape": true }],
       "semi": [2, "always"]
     }
   },
   "eslintIgnore": [
-    "cypress/**/*", "__tests__/**"
+    "cypress/**/*",
+    "__tests__/**"
   ],
   "jest": {
     "testPathIgnorePatterns": [

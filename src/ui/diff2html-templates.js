@@ -19,13 +19,11 @@ function diff2HtmlTemplate(data, diffs) {
 		</span>`;
 
   const line_by_line_file_diff =
-    `<div id="${data.snapshotTitle}" class="d2h-file-wrapper">
+    `<div class="d2h-file-wrapper">
 			<div class="d2h-file-header">${generic_file_path}</div>
 			<div class="d2h-file-diff">
 				<div class="d2h-code-wrapper">
-					<table class="d2h-diff-table">
-						<tbody class="d2h-diff-tbody">${diffs}</tbody>
-					</table>
+					${diffs}
 				</div>
 			</div>
 		</div>`;
