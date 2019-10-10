@@ -1,12 +1,7 @@
-const rimraf = require('rimraf').sync;
-const path = require('path');
+const Image = require('../utils/Image');
 const { getImageSnapshotFilename } = require('../utils/Snapshot');
-const getImageData = require('../utils/image/getImageData');
-const saveImageSnapshot = require('../utils/image/saveImageSnapshot');
-const {
-  getImageObject, compareImages, moveActualImageToSnapshotsDirectory, createDiffObject, resizeImage
-} = require('../utils/tasks/imageSnapshots');
-const { IMAGE_TYPE_DIFF, IMAGE_TYPE_ACTUAL } = require('../constants');
+const { pathExists } = require('../utils/File');
+const { STATE_AUTOPASSED, STATE_PASSED, STATE_FAILED, STATE_UPDATED, STATE_NEW } = require('../constants');
 
 async function matchImageSnapshot(data = {}) {
   const {
@@ -15,67 +10,81 @@ async function matchImageSnapshot(data = {}) {
     image,
     options,
     snapshotTitle,
-    subject,
     testFile
   } = data;
+
+  const {
+    autopassNewSnapshots,
+    imageConfig,
+    updateSnapshots
+  } = options;
+
   if (!image) {
     throw new Error('\'image\' not defined');
-  } else if (!image.devicePixelRatio) {
-    throw new Error('\'image.devicePixelRatio\' not defined');
   }
 
-  const actualFilename = getImageSnapshotFilename(testFile, snapshotTitle, IMAGE_TYPE_ACTUAL);
-  const diffFilename = getImageSnapshotFilename(testFile, snapshotTitle, IMAGE_TYPE_DIFF);
+  // Defaults
+  let passed = false, state = STATE_NEW, expected, diff, dimensions;
+
   const snapshotFile = getImageSnapshotFilename(testFile, snapshotTitle);
-  const resized = options && options.imageConfig.resizeDevicePixelRatio && image.devicePixelRatio !== 1;
+  const resized = imageConfig.resizeDevicePixelRatio && image.devicePixelRatio !== 1;
+
+  /* ACTUAL */
+  const actual = await new Image(image.path);
+
+  // resize
   if (resized) {
-    await resizeImage(image.path, actualFilename, image.devicePixelRatio);
-  }
-  if (resized === false) {
-    moveActualImageToSnapshotsDirectory(data);
-  } else {
-    image.path = actualFilename;
+    actual.resize(
+      Math.floor(actual.image.bitmap.width / image.devicePixelRatio),
+      Math.floor(actual.image.bitmap.height / image.devicePixelRatio)
+    );
   }
 
-  const expected = getImageObject(snapshotFile);
-  const exists = expected !== false;
-  const autoPassed = options.autopassNewSnapshots && expected === false;
-  const actual = exists || resized ? getImageObject(image.path, true) : image;
-  const passed = expected && compareImages(expected, actual, diffFilename, options.imageConfig);
-
-  actual.resized = resized !== false;
-
-  let updated = false;
-
-  if ((options.updateSnapshots && !passed) || expected === false) {
-    saveImageSnapshot({ testFile, snapshotTitle, actual });
-    updated = true;
+  // doesnt exist || update
+  if ((!pathExists(snapshotFile) && autopassNewSnapshots) || updateSnapshots) {
+    actual.move(snapshotFile);
+    passed = true;
+    state = updateSnapshots ? STATE_UPDATED : STATE_AUTOPASSED;
+    dimensions = {
+      width: actual.image.bitmap.width,
+      height: actual.image.bitmap.height
+    };
   }
 
-  if (passed && actual && actual.path) {
-    rimraf(actual.path);
+  /* EXPECTED */
+  else {
+    expected = await new Image(snapshotFile);
+    diff = expected.compareTo(actual, testFile, snapshotTitle, imageConfig);
+    passed = diff.passed; /* eslint-disable-line prefer-destructuring */
+    state = passed ? STATE_PASSED : STATE_FAILED;
+    dimensions = {
+      width: expected.image.bitmap.width,
+      height: expected.image.bitmap.height
+    };
   }
 
-  const diff = passed || autoPassed || !options.imageConfig.createDiffImage ?
-    undefined : createDiffObject(diffFilename);
+  // clean up snapshots
+  if (actual && actual.image) {
+    delete actual.image;
+  }
 
-  const result = {
-    actual: getImageData(actual),
+  if (expected && expected.image) {
+    delete expected.image;
+  }
+
+  return {
     commandName,
     dataType,
-    diff,
-    exists,
-    expected: getImageData(expected),
-    passed: passed || autoPassed,
-    snapshotFile: path.relative(process.cwd(), snapshotFile),
-    snapshotTitle,
-    subject,
-    updated,
     isImage: true,
-    options
+    options,
+    snapshotTitle,
+    dimensions,
+    passed,
+    state,
+    diff: diff.diff,
+    actual,
+    expected
   };
-
-  return result;
 }
 
 module.exports = matchImageSnapshot;

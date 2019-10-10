@@ -39,6 +39,13 @@ module.exports = {
   /* Other */
   URL_PREFIX: '#cypress-plugin-snapshot-',
   IMAGE_TYPE_DIFF: 'diff',
-  IMAGE_TYPE_ACTUAL: 'actual'
+  IMAGE_TYPE_ACTUAL: 'actual',
+
+  /* States */
+  STATE_AUTOPASSED: 'Auto Passed',
+  STATE_PASSED: 'Passed',
+  STATE_FAILED: 'Failed',
+  STATE_UPDATED: 'Updated',
+  STATE_NEW: 'New'
 
 };

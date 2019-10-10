@@ -3,14 +3,16 @@
 const { pick } = require('lodash');
 const logMessage = require('../utils/test/logMessage');
 const { NO_LOG, TASK_MATCH_IMAGE, SCREENSHOT_ARGS } = require('../constants');
-const getImageData = require('../utils/image/getImageData');
 
 function afterScreenshot(taskData) {
   return ($el, props) => {
     // See this url for contents of `props`:
     // https://docs.cypress.io/api/commands/screenshot.html#Get-screenshot-info-from-the-onAfterScreenshot-callback
     const win = $el.get(0).ownerDocument.defaultView;
-    taskData.image = getImageData(props, win.devicePixelRatio);
+    taskData.image = {
+      path: props.path,
+      devicePixelRatio: win.devicePixelRatio || 1
+    };
     taskData.isImage = true;
     delete taskData.subject;
   };

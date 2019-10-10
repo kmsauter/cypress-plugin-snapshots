@@ -1,9 +1,12 @@
+const fs = require('fs-extra');
+const rimraf = require('rimraf').sync;
 const textSnapshots = require('../utils/tasks/textSnapshots');
-const { saveImageSnapshot } = require('../utils/tasks/imageSnapshots');
 
 function updateSnapshot(data) {
   if (data.isImage) {
-    saveImageSnapshot(data);
+    rimraf(data.expected.path);
+    rimraf(data.diff.path);
+    fs.moveSync(data.actual.path, data.expected.path);
   } else {
     const {
       snapshotFile,

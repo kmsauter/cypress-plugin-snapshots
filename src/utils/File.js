@@ -69,5 +69,6 @@ function removeEmptyFoldersRecursively(folderToClean) {
 }
 
 module.exports = {
+  pathExists,
   removeEmptyFoldersRecursively
 };
