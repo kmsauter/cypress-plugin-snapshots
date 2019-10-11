@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const rimraf = require('rimraf').sync;
-const textSnapshots = require('../utils/tasks/textSnapshots');
+const { createDiff, updateSnap } = require('../utils/text/Snap');
 
 function updateSnapshot(data) {
   if (data.isImage) {
@@ -16,8 +16,8 @@ function updateSnapshot(data) {
       options
     } = data;
 
-    textSnapshots.updateSnapshot(snapshotFile, snapshotTitle, actual, dataType);
-    data.diff = textSnapshots.getDiff('', actual, snapshotTitle, options);
+    updateSnap(snapshotFile, snapshotTitle, actual, dataType);
+    data.diff = createDiff('', actual, snapshotTitle, options);
   }
 
   data.updated = true;

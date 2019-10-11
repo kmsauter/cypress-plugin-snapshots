@@ -7,7 +7,6 @@ const DEFAULT_CONFIG = Object.freeze({
   autopassNewSnapshots: true,
   diffLines: 3,
   excludeFields: [],
-  formatJson: true,
   ignoreExtraArrayItems: false,
   ignoreExtraFields: false,
   imageConfig: {

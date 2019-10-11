@@ -193,7 +193,7 @@ a[href^="#cypress-plugin-snapshot-"].command-state-updated:before {
 .state-passed .d2h-tag:before {
   border: #08c18d 1px solid;
   color: #08c18d;
-  content: 'NO CHANGES';
+  content: 'PASSED';
 }
 
 .state-updated .d2h-tag:before {
@@ -205,7 +205,7 @@ a[href^="#cypress-plugin-snapshot-"].command-state-updated:before {
 .state-failed .d2h-tag:before {
   border: #e94f5f 1px solid;
   color: #e94f5f;
-  content: 'CHANGED';
+  content: 'FAILED';
 }
 
 

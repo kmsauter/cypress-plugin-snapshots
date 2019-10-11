@@ -1,66 +1,67 @@
 const applyReplace = require('../utils/text/applyReplace');
-const {
-  createDiff,
-  formatDiff,
-  getSnapshot,
-  subjectToSnapshot,
-  updateSnapshot
-} = require('../utils/tasks/textSnapshots');
+const { subjectToSnap, createDiff, formatDiff, snapExists, getSnap, updateSnap } = require('../utils/text/Snap');
 const { getTextSnapshotFilename }= require('../utils/Snapshot');
 const keepKeysFromExpected = require('../utils/text/keepKeysFromExpected');
+const { STATE_AUTOPASSED, STATE_PASSED, STATE_FAILED, STATE_UPDATED, STATE_NEW } = require('../constants');
 
-function matchTextSnapshot({
-  commandName,
-  dataType,
-  options,
-  snapshotTitle,
-  subject,
-  testFile
-} = {}) {
+function matchTextSnapshot(data = {}) {
+  const {
+    commandName,
+    dataType,
+    options,
+    snapshotTitle,
+    testFile,
+    subject
+  } = data;
+
   const {
     replace,
     autopassNewSnapshots,
     updateSnapshots
   } = options;
 
+  // Defaults
+  let passed = false, state = STATE_NEW, expected;
+
   const snapshotFile = getTextSnapshotFilename(testFile);
-  const expectedRaw = getSnapshot(snapshotFile, snapshotTitle, dataType, options);
-  let expected = applyReplace(expectedRaw, replace);
-  const actual = keepKeysFromExpected(subjectToSnapshot(subject, dataType, options), expected, options);
+  const exists = snapExists(snapshotFile, snapshotTitle);
 
-  const exists = expected !== false;
+  /* ACTUAL */
+  let actual = subjectToSnap(subject, dataType, options);
 
-  const autoPassed = autopassNewSnapshots && expected === false;
-  const passed = updateSnapshots || (expected && formatDiff(expected) === formatDiff(actual));
-  const diff = createDiff(expected, actual, snapshotTitle, options);
-
-  let updated = false;
-
-  if (updateSnapshots || expected === false) {
-    updateSnapshot(snapshotFile, snapshotTitle, actual, dataType);
-    updated = true;
+  /* EXPECTED */
+  if(exists) {
+    const expectedRaw = getSnap(snapshotFile, snapshotTitle, dataType, options);
+    expected = applyReplace(expectedRaw, replace);
+    actual = keepKeysFromExpected(actual, expected, options);
   }
 
-  if (autoPassed) {
-    expected = actual;
+  // doesnt exist || update
+  if ((!exists && autopassNewSnapshots) || updateSnapshots) {
+    updateSnap(snapshotFile, snapshotTitle, actual, dataType);
+    passed = true;
+    state = updateSnapshots ? STATE_UPDATED : STATE_AUTOPASSED;
   }
 
-  const result = {
-    actual,
+  else {
+    passed = expected && formatDiff(expected) === formatDiff(actual);
+    state = passed ? STATE_PASSED : STATE_FAILED;
+  }
+
+  const diff = createDiff(passed ? '' : expected, actual, snapshotTitle, options);
+
+  return {
     commandName,
+    options,
     dataType,
-    diff,
-    exists,
-    expected,
-    passed: passed || autoPassed,
-    snapshotFile,
     snapshotTitle,
-    subject,
-    updated,
-    options
+    snapshotFile,
+    passed,
+    state,
+    actual,
+    expected,
+    diff
   };
-
-  return result;
 }
 
 module.exports = matchTextSnapshot;

@@ -1,5 +1,5 @@
 function removeExcludedFields(subject, excludedFields) {
-  if (excludedFields) {
+  if (excludedFields && Array.isArray(excludedFields)) {
     if (Array.isArray(subject)) {
       return subject.map(item => removeExcludedFields(item, excludedFields));
     }

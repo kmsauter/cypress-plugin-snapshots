@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const mkdirp = require('mkdirp');
 
 
 /**
@@ -38,6 +39,16 @@ function isDir(dirPath) {
 }
 
 /**
+ * Ensures that the directory exists. If it does not exist, it is created.
+ * @param {string} filePath - Path to check/create.
+*/
+function ensureDirExists(filePath) {
+  try {
+    mkdirp.default.sync(path.default.join(path.default.dirname(filePath)), '777');
+  } catch (e) { } /* eslint-disable-line no-empty */
+};
+
+/**
  * Recursively empties directory.
  * @param {string} folder - Path of folder to empty.
 */
@@ -70,5 +81,6 @@ function removeEmptyFoldersRecursively(folderToClean) {
 
 module.exports = {
   pathExists,
+  ensureDirExists,
   removeEmptyFoldersRecursively
 };

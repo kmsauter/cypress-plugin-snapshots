@@ -1,4 +1,4 @@
-const keepKeysFromExpected = require('../../../../src/utils/text/keepKeysFromExpected');
+const keepKeysFromExpected = require('../../../../../src/utils/text/keepKeysFromExpected');
 
 describe('keepKeysFromExpected', () => {
   const expected = {

@@ -7,7 +7,7 @@ function getLogMessage(result) {
   const args = Base64.encode(JSON.stringify(linkResult));
 
   const passedMessages = {
-    [STATE_AUTOPASSED]: 'Snapshot created, autopassed',
+    [STATE_AUTOPASSED]: 'Snapshot created',
     [STATE_PASSED]: 'Snapshots match',
     [STATE_UPDATED]: 'Snapshot updated'
   };
@@ -20,21 +20,14 @@ function getLogMessage(result) {
 }
 
 function logMessage(result) {
-  const {
-    subject,
-    passed
-  } = result;
-
-  const message = getLogMessage(result);
   const log = Cypress.log({
-    $el: subject,
     name: result.commandName,
     displayName: 'snapshot',
-    message,
+    message: getLogMessage(result),
     consoleProps: () => result
   });
 
-  if (!passed) {
+  if (!result.passed) {
     log.set('state', 'failed');
     throw new Error('Snapshots do not match.');
   }

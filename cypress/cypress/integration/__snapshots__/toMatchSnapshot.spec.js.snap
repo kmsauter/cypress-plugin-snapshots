@@ -1,4 +1,4 @@
-exports[`toMatchSnapshot > toMatchSnapshot - json #0`] =
+exports[`toMatchSnapshot > toMatchSnapshot - json #0`] = `
 {
   "number": 1234,
   "object": {
@@ -7,8 +7,9 @@ exports[`toMatchSnapshot > toMatchSnapshot - json #0`] =
       "bar": "foo"
     }
   },
-  "string": "string\\d"
-};
+  "string": "string\\\\d"
+}
+`;
 
 exports[`toMatchSnapshot > toMatchSnapshot - html #0`] = `
 <div class="wrapper" data-test="test">
@@ -51,7 +52,7 @@ exports[`toMatchSnapshot > toMatchSnapshot - html escaping #0`] = `
 </span>
 `;
 
-exports[`toMatchSnapshot > toMatchSnapshot - normalizeJson: false #0`] =
+exports[`toMatchSnapshot > toMatchSnapshot - normalizeJson: false #0`] = `
 {
   "d": 1,
   "a": 5,
@@ -78,8 +79,9 @@ exports[`toMatchSnapshot > toMatchSnapshot - normalizeJson: false #0`] =
     "p": null
   },
   "t": null
-};
+}
+`;
 
 exports[`toMatchSnapshot > toMatchSnapshot - update #0`] = `
-1570533048091
+1570772315201
 `;
