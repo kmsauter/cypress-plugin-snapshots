@@ -2,11 +2,10 @@
 /* eslint-env browser */
 const { merge } = require('lodash');
 const commands = require('./src/commands/index');
-const cleanUpSnapshots = require('./src/utils/commands/cleanupSnapshots');
-const { NO_LOG, TASK_CLEANUP_FOLDERS, COMMAND_MATCH_IMAGE_SNAPSHOT } = require('./src/constants');
+const { NO_LOG, TASK_CLEANUP, COMMAND_MATCH_IMAGE_SNAPSHOT } = require('./src/constants');
 const { initConfig, CONFIG_KEY } = require('./src/config');
 const { initUi, closeSnapshotModals } = require('./src/ui/ui');
-const { getSnapshotTitle } = require('./src/utils/Snapshot');
+const { getSnapshotTitle, SNAPSHOT_TITLES_TEXT } = require('./src/utils/Snapshot');
 const { getTestTitle, getSpec } = require('./src/utils/test/Test');
 
 let config;
@@ -54,10 +53,20 @@ function initCommands() {
     clearFileCache();
   });
 
-  // Add test icons and clean up unused snapshots
+  // Clean up unused snapshots and remove empty folders
   after(() => {
-    cleanUpSnapshots(config);
-    cy.task(TASK_CLEANUP_FOLDERS, Cypress.config('screenshotsFolder'), NO_LOG);
+    cy.task(TASK_CLEANUP, {
+      config,
+      spec: getSpec(),
+      folderPath: Cypress.config('screenshotsFolder'),
+      snaps: SNAPSHOT_TITLES_TEXT
+    }, NO_LOG).then((result) => {
+      Cypress.log({
+        name: 'Cleanup',
+        message: 'Cleanup',
+        consoleProps: () => result
+      });
+    });
   });
 
   // Add commands

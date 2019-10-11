@@ -24,7 +24,6 @@ function getImageSnapshotFilename(testFile, snapshotTitle, type = '') {
   return getFilename(testFile, DIR_IMAGE_SNAPSHOTS, `${snapshotTitle}${fileType}.png`);
 }
 
-
 function snapshotTitleIsUsed(snapshotTitle, isImage = false) {
   return (isImage ? SNAPSHOT_TITLES_IMAGE : SNAPSHOT_TITLES_TEXT).indexOf(snapshotTitle) !== -1;
 }
@@ -48,5 +47,6 @@ module.exports = {
   getTextSnapshotFilename,
   getImageSnapshotFilename,
   snapshotTitleIsUsed,
-  getSnapshotTitle
+  getSnapshotTitle,
+  SNAPSHOT_TITLES_TEXT
 };

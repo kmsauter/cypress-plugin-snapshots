@@ -8,7 +8,7 @@ module.exports = {
   TASK_GET_FILE: 'cypress-plugin-snapshot:getFile',
   TASK_MATCH_IMAGE: 'cypress-plugin-snapshot:matchImage',
   TASK_MATCH_TEXT: 'cypress-plugin-snapshot:matchText',
-  TASK_CLEANUP_FOLDERS: 'cypress-plugin-snapshot:cleanupFolders',
+  TASK_CLEANUP: 'cypress-plugin-snapshot:cleanup',
   TASK_UPDATE_SNAPSHOT: 'cypress-plugin-snapshot:updateSnapshot',
 
   /* Data Types */
