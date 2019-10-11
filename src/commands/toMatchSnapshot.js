@@ -2,7 +2,7 @@
 /* eslint-env browser */
 const logMessage = require('../utils/test/logMessage');
 const { NO_LOG, TASK_MATCH_TEXT, TYPE_JSON, TYPE_HTML } = require('../constants');
-const { getSubject, isHtml } = require('../utils/text/html');
+const { getSubject, isHtml } = require('../utils/text/utils');
 
 function toMatchSnapshot(taskData) {
 

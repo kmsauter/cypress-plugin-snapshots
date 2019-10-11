@@ -1,5 +1,5 @@
-const _ = require('lodash');
-const removeExcludedFields = require('../../../../../src/utils/text/removeExcludedFields');
+const { cloneDeep } = require('lodash');
+const { removeExcludedFields } = require('../../../../../src/utils/text/utils');
 
 describe('removeExcludedFields', () => {
 	const objOriginal = {
@@ -13,19 +13,19 @@ describe('removeExcludedFields', () => {
 	};
 
 	it('fields not array', () => {
-		var obj = _.cloneDeep(objOriginal);
+		var obj = cloneDeep(objOriginal);
 		var result = removeExcludedFields(obj, 5);
 		expect(result).to.deep.equal(objOriginal);
 	});
 
 	it('empty array', () => {
-		var obj = _.cloneDeep(objOriginal);
+		var obj = cloneDeep(objOriginal);
 		var result = removeExcludedFields(obj, []);
 		expect(result).to.deep.equal(objOriginal);
 	});
 
 	it('removes fields - object', () => {
-		var obj = _.cloneDeep(objOriginal);
+		var obj = cloneDeep(objOriginal);
 		var result = removeExcludedFields(obj, ['b']);
 		const expected = {
 			a: 1,

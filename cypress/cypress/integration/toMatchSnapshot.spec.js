@@ -1,3 +1,5 @@
+const { runSuites } = require('../fixtures/data-types');
+
 describe('toMatchSnapshot', () => {
   it('toMatchSnapshot - json', () => {
     cy.request('/static/stub.json')
@@ -43,6 +45,18 @@ describe('toMatchSnapshot', () => {
   it('toMatchSnapshot - update', () => {
     cy.wrap(Date.now()).toMatchSnapshot({
       updateSnapshots: true
+    });
+  });
+
+  describe('data types', function () {
+    before(function () {
+      cy.visit('/static/stub3.html');
+    });
+
+    describe('toMatchSnapshot', function () {
+      runSuites('toMatchSnapshot', function (item) {
+        cy.wrap(item).toMatchSnapshot();
+      }, ['undefined']);
     });
   });
 });

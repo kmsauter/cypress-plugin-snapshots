@@ -83,5 +83,101 @@ exports[`toMatchSnapshot > toMatchSnapshot - normalizeJson: false #0`] = `
 `;
 
 exports[`toMatchSnapshot > toMatchSnapshot - update #0`] = `
-1570772315201
+1570775795070
+`;
+
+exports[`toMatchSnapshot > toMatchSnapshot - update2 #0`] = `
+1570773208199
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > other > null #0`] = `
+null
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > other > false #0`] = `
+false
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > other > true #0`] = `
+true
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > json > string #0`] = `
+kylie
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > json > number #0`] = `
+5
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > json > date #0`] = `
+2019-02-11T05:00:00.000Z
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > json > array #0`] = `
+[
+  1,
+  2,
+  3
+]
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > json > object #0`] = `
+{
+  "a": 1,
+  "b": 2
+}
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > json > object-2 #0`] = `
+{
+  "a": 1,
+  "b": 2
+}
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > json > template #0`] = `
+Line 1
+		Line2
+		Line3
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > html > jquery-get #0`] = `
+<h4>H1</h4>
+<h4>H2</h4>
+<h4>H3</h4>
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > html > jquery-create #0`] = `
+<div>Created DIV</div>
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > html > cy-get-element #0`] = `
+<h4>H1</h4>
+<h4>H2</h4>
+<h4>H3</h4>
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > html > DOM-exists #0`] = `
+<div id="test-div">Test Div</div>
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > html > DOM-created #0`] = `
+<div>DOM-created</div>
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > html > HTMLCollection #0`] = `
+<h4>H1</h4>
+<h4>H2</h4>
+<h4>H3</h4>
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > html > NodeList #0`] = `
+<h4>H1</h4>
+<h4>H2</h4>
+<h4>H3</h4>
+`;
+
+exports[`toMatchSnapshot > data types > toMatchSnapshot > toMatchSnapshot > html > svg #0`] = `
+<svg height="20" width="40"><path d="M10 0 L0 20 L20 20 Z"></path></svg>
 `;

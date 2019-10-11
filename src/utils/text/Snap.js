@@ -4,8 +4,7 @@ const prettier = require('prettier');
 const unidiff = require('unidiff');
 const { TYPE_JSON } = require('../../constants');
 const { readSnapFile, saveSnapFile } = require('./SnapFile');
-const { formatJson, normalizeObject } = require('./json');
-const removeExcludedFields = require('./removeExcludedFields');
+const { formatJson, normalizeObject, removeExcludedFields } = require('./utils');
 
 function parseSavedSnap(obj) {
   try {

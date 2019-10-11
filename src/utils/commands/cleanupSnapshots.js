@@ -1,6 +1,6 @@
 /* globals cy */
 /* eslint-env browser */
-const { formatNormalizedJson } = require('../text/json');
+const { formatJson, normalizeObject } = require('../text/utils');
 const { getTextSnapshotFilename, snapshotTitleIsUsed } = require('../Snapshot');
 const { getSpec } = require('../../utils/test/Test');
 const { NO_LOG } = require('../../constants');
@@ -26,7 +26,7 @@ function cleanUpSnapshots(config) {
         }, {});
 
       cy.writeFile(filename,
-        formatNormalizedJson(cleanSnapshot),
+        formatJson(normalizeObject(cleanSnapshot)),
         NO_LOG);
     }
   });
